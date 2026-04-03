@@ -177,7 +177,7 @@ def reset_game():
                         menu_state = "Resolution"
                     if Back_rect.collidepoint(mouse_pos):
                         initial_limit = limit
-                        menu_state = "Settings"
+                        menu_state = "Main"
 
                 elif menu_state == "Resolution":
                     if Increase_rect.collidepoint(mouse_pos) and limit + 30 < 1201:
