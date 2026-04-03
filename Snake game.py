@@ -51,8 +51,6 @@ def reset_game():
     apple_y = random.randrange(30, limit - size, size)
     apple_rect = pygame.Rect(apple_x, apple_y, size, size)
 
-
-
     while True:
         screen.fill((0, 0, 0))
         Back = font.render("Go Back", True, (255, 255, 255))
@@ -169,7 +167,6 @@ def reset_game():
                         initial_limit = limit
                         menu_state = "Settings"
 
-
                 elif menu_state == "Settings":
                     if control_rect.collidepoint(mouse_pos):
                         menu_state = "Controls"
@@ -239,6 +236,9 @@ reset_game()
 screen = pygame.display.set_mode((limit, limit))
 running = True
 
+last_input_time = 0
+input_cooldown = 10
+
 while running:
     pygame.event.pump()
 
@@ -249,16 +249,19 @@ while running:
             sys.exit()
 
         if event.type == pygame.KEYDOWN:
-            if event.key == controls["PAUSE"]:
-                Paused = not Paused
-            if event.key == controls["UP"] and direction != "down":
-                direction = "up"
-            elif event.key == controls["DOWN"] and direction != "up":
-                direction = "down"
-            elif event.key == controls["LEFT"] and direction != "right":
-                direction = "left"
-            elif event.key == controls["RIGHT"] and direction != "left":
-                direction = "right"
+            now = pygame.time.get_ticks()
+            if now - last_input_time >= input_cooldown:
+                last_input_time = now
+                if event.key == controls["PAUSE"]:
+                    Paused = not Paused
+                if event.key == controls["UP"] and direction != "down":
+                    direction = "up"
+                elif event.key == controls["DOWN"] and direction != "up":
+                    direction = "down"
+                elif event.key == controls["LEFT"] and direction != "right":
+                    direction = "left"
+                elif event.key == controls["RIGHT"] and direction != "left":
+                    direction = "right"
 
     if Paused:
         screen.fill((0, 0, 0))
